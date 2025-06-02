@@ -1,53 +1,49 @@
-import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import MainFeature from '../components/MainFeature'
+import { useSelector } from 'react-redux'
+import { useContext } from 'react'
+import { AuthContext } from '../App'
 import ApperIcon from '../components/ApperIcon'
+import MainFeature from '../components/MainFeature'
 
 const Home = () => {
-  const [darkMode, setDarkMode] = useState(false)
-
-  useEffect(() => {
-    if (darkMode) {
-      document.documentElement.classList.add('dark')
-    } else {
-      document.documentElement.classList.remove('dark')
-    }
-  }, [darkMode])
+  const { user, isAuthenticated } = useSelector((state) => state.user)
+  const { logout } = useContext(AuthContext)
 
   return (
-    <div className="min-h-screen relative">
-      {/* Navigation */}
-      <motion.nav 
-        initial={{ y: -20, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        className="relative z-50 px-4 sm:px-6 lg:px-8 py-4"
-      >
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <motion.div 
-            className="flex items-center space-x-3"
-            whileHover={{ scale: 1.05 }}
+    <div className="min-h-screen">
+      {/* Header */}
+      <header className="relative py-20 px-6">
+        <div className="max-w-4xl mx-auto text-center">
+          <motion.div
+            initial={{ y: 30, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.8 }}
           >
-            <div className="w-10 h-10 bg-gradient-to-r from-primary to-secondary rounded-xl flex items-center justify-center shadow-soft">
-              <ApperIcon name="CheckSquare" className="w-6 h-6 text-white" />
+            <div className="flex justify-between items-center mb-6">
+              <h1 className="text-5xl md:text-6xl font-bold text-gradient">
+                TaskFlow
+              </h1>
+              {isAuthenticated && (
+                <div className="flex items-center space-x-4">
+                  <span className="text-surface-600 dark:text-surface-400">
+                    Welcome, {user?.firstName || user?.name || 'User'}
+                  </span>
+                  <button
+                    onClick={logout}
+                    className="btn-secondary flex items-center space-x-2"
+                  >
+                    <ApperIcon name="LogOut" className="w-4 h-4" />
+                    <span>Logout</span>
+                  </button>
+                </div>
+              )}
             </div>
-            <span className="text-2xl font-bold text-gradient">TaskFlow</span>
-          </motion.div>
-          
-          <div className="flex items-center space-x-4">
-            <motion.button
-              onClick={() => setDarkMode(!darkMode)}
-              className="p-2 rounded-xl bg-surface-100 dark:bg-surface-800 hover:bg-surface-200 dark:hover:bg-surface-700 transition-all duration-200"
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <ApperIcon 
-                name={darkMode ? "Sun" : "Moon"} 
-                className="w-5 h-5 text-surface-600 dark:text-surface-400" 
-              />
-            </motion.button>
-          </div>
+            <p className="text-xl text-surface-600 dark:text-surface-400 max-w-2xl mx-auto">
+              Streamline your productivity with intelligent task management designed for modern workflows.
+            </p>
+</motion.div>
         </div>
-      </motion.nav>
+      </header>
 
       {/* Background Pattern */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">

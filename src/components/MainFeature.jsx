@@ -491,18 +491,27 @@ const MainFeature = () => {
                 </div>
 
                 <div className="flex space-x-3 pt-4">
-                  <button
+<button
                     type="button"
                     onClick={resetForm}
                     className="btn-secondary flex-1"
+                    disabled={submitting}
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
                     className="btn-primary flex-1"
+                    disabled={submitting}
                   >
-                    {editingTask ? 'Update Task' : 'Create Task'}
+                    {submitting ? (
+                      <div className="flex items-center space-x-2">
+                        <div className="animate-spin w-4 h-4 border-2 border-white border-t-transparent rounded-full"></div>
+                        <span>{editingTask ? 'Updating...' : 'Creating...'}</span>
+                      </div>
+                    ) : (
+                      editingTask ? 'Update Task' : 'Create Task'
+                    )}
                   </button>
                 </div>
               </form>
